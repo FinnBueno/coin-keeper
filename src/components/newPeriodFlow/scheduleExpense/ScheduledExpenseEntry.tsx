@@ -1,16 +1,16 @@
 import type { FC } from "react";
-import type { NewPlan } from "../../../context/startPeriodTypes";
+import type { ScheduledExpense } from "../../../context/startPeriodTypes";
 import { Delete, Edit } from "@mui/icons-material";
 import { Box, Grid, IconButton, ListItem, Typography } from "@mui/material";
 import { toEuro } from "../../../util/money";
 
 interface Props {
-  plan: NewPlan;
+  plan: ScheduledExpense;
   onRemove: () => void;
   onEdit: () => void;
 }
 
-const categoryToEmoji: Record<NewPlan["category"], string> = {
+const categoryToEmoji: Record<ScheduledExpense["category"], string> = {
   events: "🎭",
   want_to_have: "💫",
   life: "🗓️",

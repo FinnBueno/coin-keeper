@@ -1,9 +1,7 @@
-import type { NewMonthPlanning } from "../context/startPeriodTypes";
+import type { ScheduledExpense } from "../context/startPeriodTypes";
 import { months } from "./months";
 
-export function parseEasyDate(
-  inputAt: string,
-): NewMonthPlanning["plans"][0]["at"] {
+export function parseEasyDate(inputAt: string): ScheduledExpense["at"] {
   let dayofmonth;
   let month;
   const today = new Date();

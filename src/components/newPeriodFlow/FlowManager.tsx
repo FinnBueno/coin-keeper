@@ -36,10 +36,14 @@ const ALL_STATES = Object.keys(componentsByState) as State[];
 export const FlowManager: FC = () => {
   const [state, setState] = useState<State>("before_starting");
 
+  const handleFinishFlow = () => {
+    // todo: start new period
+  };
+
   const index = ALL_STATES.indexOf(state);
   const max = ALL_STATES.length - 1;
   const handleNext =
-    index < max ? () => setState(ALL_STATES.at(index + 1)!) : () => {};
+    index < max ? () => setState(ALL_STATES.at(index + 1)!) : handleFinishFlow;
   const handleBack =
     index > 0 ? () => setState(ALL_STATES.at(index - 1)!) : () => {};
 

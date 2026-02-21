@@ -1,25 +1,55 @@
 import { Box, Button, Link, Typography } from "@mui/material";
 import type { FlowStepComponent } from "./FlowStepType";
 import { Flex } from "../../general/Flex";
-import { FieldArray, Formik } from "formik";
+import { Formik } from "formik";
 import { toFormikValidationSchema } from "zod-formik-adapter";
 import { MoneyInput } from "../../general/MoneyInput";
-import { months } from "../../../util/months";
-import { PlanEntry } from "../plans/PlanEntry";
-import { NewPlanInput } from "../plans/NewPlanInput";
-import {
-  newPlansSchema,
-  type NewMonthPlanning,
-} from "../../../context/startPeriodTypes";
+import { PlanEntry } from "../scheduleExpense/ScheduledExpenseEntry";
+import { NewScheduledExpense } from "../scheduleExpense/NewScheduledExpenseInput";
+import { type ScheduledExpense } from "../../../context/startPeriodTypes";
 import { useStartNewPeriod } from "../../../context/StartNewPeriodContext";
+import { months } from "../../../util/months";
+import { useState } from "react";
+import { z } from "zod";
+
+export const budgetInputSchema = z.object({
+  travelBudget: z.coerce.number("Required").gt(0, "Car won't fuel itself"),
+  foodBudget: z.coerce.number("Required").gt(0, "You gotta eat something"),
+});
+
+export type BudgetInput = z.infer<typeof budgetInputSchema>;
 
 export const PlanningStep: FlowStepComponent = ({ goBack, goNext }) => {
   const { setPlanning, planning } = useStartNewPeriod();
 
-  const handleSubmitted = ({ planInput: _, ...values }: NewMonthPlanning) => {
-    setPlanning(values);
+  const handleSubmitted = (values: BudgetInput) => {
+    setPlanning((oldState) => {
+      return {
+        ...oldState,
+        ...values,
+      };
+    });
     goNext();
   };
+
+  const removeScheduledExpense = (expense: ScheduledExpense) =>
+    setPlanning((oldState) => ({
+      ...oldState,
+      scheduledExpenses: oldState?.scheduledExpenses.filter(
+        (pl) => pl !== expense,
+      ),
+    }));
+
+  const addScheduledExpense = (expense: ScheduledExpense) => {
+    setPlanning((oldState) => ({
+      ...oldState,
+      scheduledExpenses: [...oldState.scheduledExpenses, expense],
+    }));
+  };
+
+  const [initialFillValues, setInitialFillValues] = useState<
+    Omit<ScheduledExpense, "at"> & { at: string }
+  >();
 
   return (
     <Flex flexDirection="column" gap={2}>
@@ -27,26 +57,17 @@ export const PlanningStep: FlowStepComponent = ({ goBack, goNext }) => {
         Please fill in everything you already know you'll be spending money on
         the upcoming month (subscriptions automatically carry over).
       </Typography>
-      <Formik<NewMonthPlanning>
+      <Formik<BudgetInput>
         initialValues={{
-          travelBudget: "" as unknown as number,
-          foodBudget: "" as unknown as number,
-          plans: [],
-          ...(planning ?? {}),
-          planInput: {
-            title: "",
-            type: "exact",
-            category: "events",
-            amount: 0,
-            at: "1",
-          },
+          travelBudget: planning?.travelBudget ?? ("" as unknown as number),
+          foodBudget: planning?.foodBudget ?? ("" as unknown as number),
         }}
         validateOnBlur={false}
         validateOnChange={false}
-        validationSchema={toFormikValidationSchema(newPlansSchema)}
+        validationSchema={toFormikValidationSchema(budgetInputSchema)}
         onSubmit={handleSubmitted}
       >
-        {({ handleSubmit, values, setFieldValue, validateField }) => (
+        {({ handleSubmit, validateField }) => (
           <Box
             component="form"
             display="flex"
@@ -77,38 +98,32 @@ export const PlanningStep: FlowStepComponent = ({ goBack, goNext }) => {
                 and see what you've got planned this month.
               </Typography>
               <Flex mt={2} gap={2} width="100%" justifyContent="center">
-                <FieldArray
-                  name="plans"
-                  render={(arrayHelpers) => (
-                    <Flex flexDirection="column" width="100%">
-                      <Box
-                        display="grid"
-                        alignItems="center"
-                        columnGap={2}
-                        gridTemplateColumns={
-                          "1fr min-content min-content min-content"
-                        }
-                        mb={2}
-                      >
-                        {values.plans?.map((plan, index) => (
-                          <PlanEntry
-                            key={index}
-                            plan={plan}
-                            onRemove={() => arrayHelpers.remove(index)}
-                            onEdit={() => {
-                              arrayHelpers.remove(index);
-                              setFieldValue("planInput", {
-                                ...plan,
-                                at: `${plan.at.dayofmonth}/${months.indexOf(plan.at.month) + 1}`,
-                              });
-                            }}
-                          />
-                        ))}
-                      </Box>
-                      <NewPlanInput />
-                    </Flex>
-                  )}
-                ></FieldArray>
+                <Flex flexDirection="column" width="100%">
+                  <Box
+                    display="grid"
+                    alignItems="center"
+                    columnGap={2}
+                    gridTemplateColumns={
+                      "1fr min-content min-content min-content"
+                    }
+                    mb={2}
+                  >
+                    {planning?.scheduledExpenses?.map((plan, index) => (
+                      <PlanEntry
+                        key={index}
+                        plan={plan}
+                        onRemove={() => removeScheduledExpense(plan)}
+                        onEdit={() => {
+                          removeScheduledExpense(plan);
+                          setInitialFillValues({
+                            ...plan,
+                            at: `${plan.at.dayofmonth}/${months.indexOf(plan.at.month) + 1}`,
+                          });
+                        }}
+                      />
+                    ))}
+                  </Box>
+                </Flex>
               </Flex>
             </Flex>
             <Button
@@ -125,6 +140,10 @@ export const PlanningStep: FlowStepComponent = ({ goBack, goNext }) => {
           </Box>
         )}
       </Formik>
+      <NewScheduledExpense
+        onAddScheduledExpense={addScheduledExpense}
+        initialValues={initialFillValues}
+      />
       <Button onClick={goBack} color="info" variant="text">
         Go back
       </Button>

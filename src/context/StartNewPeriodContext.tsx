@@ -2,16 +2,25 @@ import {
   createContext,
   useContext,
   useState,
+  type Dispatch,
   type FC,
   type ReactNode,
+  type SetStateAction,
 } from "react";
-import type { NewMonthPlanningComplete } from "./startPeriodTypes";
+import type { ScheduledExpense } from "./startPeriodTypes";
+import { useSavingCalculations } from "../hooks/useSavingCalculations";
+
+interface NewMonthPlanning {
+  travelBudget: number;
+  foodBudget: number;
+  scheduledExpenses: ScheduledExpense[];
+}
 
 interface StartNewPeriodControls {
-  setStartAmount: (startAmount: number) => void;
+  setStartAmount: Dispatch<SetStateAction<number>>;
   startAmount: number;
-  setPlanning: (newPlanning: NewMonthPlanningComplete) => void;
-  planning?: NewMonthPlanningComplete;
+  setPlanning: Dispatch<SetStateAction<NewMonthPlanning>>;
+  planning?: NewMonthPlanning;
 }
 
 const StartNewPeriodContext = createContext<StartNewPeriodControls>({
@@ -26,16 +35,19 @@ export const StartNewPeriodContextProvider: FC<{ children: ReactNode }> = ({
 }) => {
   const [startAmount, setStartAmount] =
     useState<StartNewPeriodControls["startAmount"]>(0);
-  const [planning, setPlanning] =
-    useState<StartNewPeriodControls["planning"]>(undefined);
+  const [planning, setPlanning] = useState<NewMonthPlanning>({
+    foodBudget: 0,
+    travelBudget: 0,
+    scheduledExpenses: [],
+  });
 
   return (
     <StartNewPeriodContext.Provider
       value={{
         setStartAmount,
         startAmount,
-        planning,
         setPlanning,
+        planning,
       }}
     >
       {children}
