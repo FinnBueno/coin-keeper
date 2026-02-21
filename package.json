@@ -12,11 +12,16 @@
   "dependencies": {
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
+    "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.7",
+    "firebase": "^12.9.0",
+    "formik": "^2.4.9",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "react-router": "^7.13.0",
-    "vite-plugin-mkcert": "^1.17.9"
+    "vite-plugin-mkcert": "^1.17.9",
+    "zod": "^4.3.6",
+    "zod-formik-adapter": "^2.0.0"
   },
   "devDependencies": {
     "@eslint/js": "^9.39.1",

@@ -1,6 +1,6 @@
 import { Box } from "@mui/material";
 import type { FC, ReactNode } from "react";
-import { Header } from "../organism/Header";
+import { Header } from "../general/Header";
 
 interface Props {
   children: ReactNode;
@@ -9,6 +9,15 @@ interface Props {
 export const AppLayout: FC<Props> = ({ children }) => (
   <Box sx={{ width: "100%" }}>
     <Header />
-    {children}
+    <Box display="flex" justifyContent="center" width="100%">
+      <Box
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+        width="100%"
+      >
+        {children}
+      </Box>
+    </Box>
   </Box>
 );

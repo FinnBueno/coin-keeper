@@ -1,10 +1,13 @@
-import { Box } from "@mui/material";
 import type { FC } from "react";
+import { Overview } from "../components/overview";
+import { Flex } from "../components/general/Flex";
+import { FinancialTables } from "../components/tables";
 
 export const MainPage: FC = () => {
   return (
-    <Box display="flex" justifyContent="center" alignItems="center">
-      Test
-    </Box>
+    <Flex alignItems="center" width="100%" flexDirection="column" gap={2}>
+      <Overview />
+      <FinancialTables />
+    </Flex>
   );
 };
