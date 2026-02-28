@@ -6,8 +6,11 @@ import { useSavingCalculations } from "../../../hooks/useSavingCalculations";
 import { toEuro } from "../../../util/money";
 import { toPercentage } from "../../../util/percentage";
 import { Dangerous } from "@mui/icons-material";
+import { useDataClient } from "../../../context/DatabaseContext";
 
 export const ConfirmationStep: FlowStepComponent = ({ goNext, goBack }) => {
+  const { startNewPeriod } = useDataClient();
+
   const { startAmount, planning } = useStartNewPeriod();
 
   const { toSharedAccount, toPersonalAccount, personalSpending } =
@@ -36,14 +39,27 @@ export const ConfirmationStep: FlowStepComponent = ({ goNext, goBack }) => {
     scheduledFoodExpenses,
   );
 
-  const totalScheduledCosts = scheduledExpenses.reduce(
-    (total, next) => total + next.amount,
-    0,
-  );
+  const totalReservedCosts =
+    scheduledExpenses
+      .filter((i) => i.category !== "food" && i.category !== "travel")
+      .reduce((total, next) => total + next.amount, 0) +
+    foodBudget +
+    travelBudget;
   const totalScheduledCostsPercentage = toPercentage(
     personalSpending,
-    totalScheduledCosts,
+    totalReservedCosts,
   );
+
+  const handleStart = () => {
+    startNewPeriod(
+      startAmount,
+      toSharedAccount,
+      toPersonalAccount,
+      personalSpending,
+      planning!,
+    );
+    goNext();
+  };
 
   return (
     <Flex flexDirection="column" gap={2}>
@@ -60,7 +76,7 @@ export const ConfirmationStep: FlowStepComponent = ({ goNext, goBack }) => {
         🥪 For food, you've allocated {toEuro(foodBudget)} (
         {foodBudgetPercentage} of your total spending).
         <br />
-        {toEuro(scheduledFoodExpenses)} of that budget is already allocated (
+        {toEuro(scheduledFoodExpenses)} of that budget is pre-allocated (
         {scheduledFoodExpensesPercentage} of your food budget)
       </Typography>
       {scheduledFoodExpenses > foodBudget ? (
@@ -74,7 +90,7 @@ export const ConfirmationStep: FlowStepComponent = ({ goNext, goBack }) => {
         🚗 For travel, you've allocated {toEuro(travelBudget)} (
         {travelBudgetPercentage} of your total spending).
         <br />
-        {toEuro(scheduledTravelExpenses)} of that budget is already allocated (
+        {toEuro(scheduledTravelExpenses)} of that budget is pre-allocated (
         {scheduledTravelExpensesPercentage} of your travel budget)
       </Typography>
       {scheduledTravelExpenses > travelBudget ? (
@@ -86,21 +102,21 @@ export const ConfirmationStep: FlowStepComponent = ({ goNext, goBack }) => {
       ) : null}
       <Typography>
         Your scheduled events (including food and travel) total{" "}
-        {toEuro(totalScheduledCosts)} ({totalScheduledCostsPercentage}), leaving
-        you with {toEuro(personalSpending - totalScheduledCosts)} of unallocated
+        {toEuro(totalReservedCosts)} ({totalScheduledCostsPercentage}), leaving
+        you with {toEuro(personalSpending - totalReservedCosts)} of unallocated
         funds.
-        {personalSpending - totalScheduledCosts >= 100
+        {personalSpending - totalReservedCosts >= 100
           ? " Don't spend it all in one place!"
           : ""}
       </Typography>
-      {totalScheduledCosts > personalSpending ? (
+      {totalReservedCosts > personalSpending ? (
         <Alert icon={<Dangerous fontSize="inherit" />} severity="error">
           Your scheduled expenses are higher (
-          {toEuro(totalScheduledCosts - personalSpending)}) than your personal
+          {toEuro(totalReservedCosts - personalSpending)}) than your personal
           spending. Please review the previous steps.
         </Alert>
       ) : null}
-      <Button color="info" variant="contained" fullWidth onClick={goNext}>
+      <Button color="info" variant="contained" fullWidth onClick={handleStart}>
         Start new period
       </Button>
       <Button onClick={goBack} color="info" variant="text">

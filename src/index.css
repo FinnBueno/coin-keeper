@@ -19,3 +19,11 @@ input::-webkit-inner-spin-button {
 input[type="number"] {
   -moz-appearance: textfield; /* Firefox */
 }
+
+body {
+  height: 100vh;
+}
+
+#root {
+  height: 100%;
+}

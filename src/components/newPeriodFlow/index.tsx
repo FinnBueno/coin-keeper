@@ -1,4 +1,4 @@
-import { Button, Modal, Box, Typography } from "@mui/material";
+import { Button } from "@mui/material";
 import { useState, type FC } from "react";
 import { AppModal } from "../general/AppModal";
 import { FlowManager } from "./FlowManager";
@@ -19,7 +19,7 @@ export const NewPeriodFlow: FC = () => {
         Start new period
       </Button>
       <AppModal open={open} onClose={handleClose}>
-        <FlowManager />
+        <FlowManager onComplete={handleClose} />
       </AppModal>
     </>
   );

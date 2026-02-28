@@ -10,7 +10,7 @@ export const CurrentPeriodInfo: FC = () => {
       </Typography>
       <Typography variant="h6">26/01/2026</Typography>
       <Typography variant="body1" fontWeight="bold">
-        Last run
+        Last import
       </Typography>
       <Typography variant="h6">20/02/2026</Typography>
     </Flex>

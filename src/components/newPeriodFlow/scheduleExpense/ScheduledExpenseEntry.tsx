@@ -1,7 +1,11 @@
 import type { FC } from "react";
-import type { ScheduledExpense } from "../../../context/startPeriodTypes";
+import {
+  planTypes,
+  type PlanCategories,
+  type ScheduledExpense,
+} from "../../../repositories/periodManagement/IPeriodManagementRepository";
 import { Delete, Edit } from "@mui/icons-material";
-import { Box, Grid, IconButton, ListItem, Typography } from "@mui/material";
+import { Box, IconButton, Typography } from "@mui/material";
 import { toEuro } from "../../../util/money";
 
 interface Props {
@@ -10,9 +14,9 @@ interface Props {
   onEdit: () => void;
 }
 
-const categoryToEmoji: Record<ScheduledExpense["category"], string> = {
+const categoryToEmoji: Record<keyof PlanCategories, string> = {
   events: "🎭",
-  want_to_have: "💫",
+  wantToHave: "💫",
   life: "🗓️",
   travel: "🚗",
   food: "🥪",
@@ -25,8 +29,7 @@ export const PlanEntry: FC<Props> = ({ plan, onRemove, onEdit }) => {
         {categoryToEmoji[plan.category]} {plan.title}
       </Typography>
       <Typography minWidth="max-content" textAlign="right">
-        {plan.type === "up_to" && "Up to "}
-        {toEuro(plan.amount)}
+        {planTypes[plan.type]} {toEuro(plan.amount)}
       </Typography>
       <Typography minWidth="max-content" textAlign="right">
         {plan.at.dayofmonth} {plan.at.month}

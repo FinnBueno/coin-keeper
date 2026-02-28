@@ -4,7 +4,13 @@ import { MenuItem } from "@mui/material";
 import { TextInput } from "../../general/TextInput";
 import { Selectable } from "../../general/Selectable";
 import { Formik } from "formik";
-import type { ScheduledExpense } from "../../../context/startPeriodTypes";
+import {
+  mapPlanCategories,
+  mapPlanTypes,
+  planCategories,
+  planTypes,
+  type ScheduledExpense,
+} from "../../../repositories/periodManagement/IPeriodManagementRepository";
 import { parseEasyDate } from "../../../util/easyDates";
 import { z } from "zod";
 import {
@@ -13,6 +19,7 @@ import {
   months,
 } from "../../../util/months";
 import { toFormikValidationSchema } from "zod-formik-adapter";
+import { typedObjectKeys } from "../../../util/types";
 
 const convertInputToScheduledExpense = (
   planInput: ScheduledExpenseInput,
@@ -59,11 +66,8 @@ export type ScheduledExpenseDate = z.infer<typeof dateInputSchema>;
 
 const scheduledExpenseInputSchema = z.object({
   title: z.string("Required"),
-  type: z.enum(["exact", "up_to"], "Invalid"),
-  category: z.enum(
-    ["events", "want_to_have", "life", "travel", "food"],
-    "Invalid",
-  ),
+  type: z.enum(typedObjectKeys(planTypes), "Invalid"),
+  category: z.enum(typedObjectKeys(planCategories), "Invalid"),
   amount: z.coerce.number("Required").gt(0, "Too low"),
   at: dateInputSchema,
 });
@@ -153,8 +157,9 @@ export const NewScheduledExpense: FC<Props> = ({
             defaultValue={"exact"}
             onBlur={() => touched["type"] && validateField("type")}
           >
-            <MenuItem value={"exact"}>Exact</MenuItem>
-            <MenuItem value={"up_to"}>Up to</MenuItem>
+            {mapPlanTypes((key, value) => (
+              <MenuItem value={key}>{value}</MenuItem>
+            ))}
           </Selectable>
           <Selectable
             name="category"
@@ -162,11 +167,9 @@ export const NewScheduledExpense: FC<Props> = ({
             defaultValue={"food"}
             onBlur={() => touched["category"] && validateField("category")}
           >
-            <MenuItem value={"food"}>Food</MenuItem>
-            <MenuItem value={"travel"}>Travel</MenuItem>
-            <MenuItem value={"want_to_have"}>Want to have</MenuItem>
-            <MenuItem value={"events"}>Events</MenuItem>
-            <MenuItem value={"life"}>Life</MenuItem>
+            {mapPlanCategories((key, value) => (
+              <MenuItem value={key}>{value}</MenuItem>
+            ))}
           </Selectable>
           <TextInput
             type="number"

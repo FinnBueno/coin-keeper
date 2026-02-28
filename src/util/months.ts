@@ -11,7 +11,9 @@ export const months = [
   "october",
   "november",
   "december",
-];
+] as const;
+
+export type Months = typeof months;
 
 export const monthMaxDays: Record<string, () => number> = {
   january: () => 31,

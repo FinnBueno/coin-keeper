@@ -3,10 +3,15 @@ import { useState, type FC } from "react";
 import { BeforeStartingStep } from "./views/BeforeStarting";
 import type { FlowStepComponent } from "./views/FlowStepType";
 import { EnterSalaryStep } from "./views/EnterSalary";
-import { StartNewPeriodContextProvider } from "../../context/StartNewPeriodContext";
+import {
+  StartNewPeriodContextProvider,
+  useStartNewPeriod,
+} from "../../context/StartNewPeriodContext";
 import { ShowTransfersStep } from "./views/ShowTransfers";
 import { PlanningStep } from "./views/Planning";
 import { ConfirmationStep } from "./views/Confirmation";
+import { useSavingCalculations } from "../../hooks/useSavingCalculations";
+import { useDataClient } from "../../context/DatabaseContext";
 
 type State =
   | "before_starting"
@@ -33,11 +38,12 @@ const titlesByState: Record<State, string> = {
 
 const ALL_STATES = Object.keys(componentsByState) as State[];
 
-export const FlowManager: FC = () => {
+export const FlowManager: FC<{ onComplete: () => void }> = ({ onComplete }) => {
   const [state, setState] = useState<State>("before_starting");
 
   const handleFinishFlow = () => {
-    // todo: start new period
+    setState("before_starting");
+    onComplete();
   };
 
   const index = ALL_STATES.indexOf(state);

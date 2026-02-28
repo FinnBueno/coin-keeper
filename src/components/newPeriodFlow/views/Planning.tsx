@@ -6,7 +6,7 @@ import { toFormikValidationSchema } from "zod-formik-adapter";
 import { MoneyInput } from "../../general/MoneyInput";
 import { PlanEntry } from "../scheduleExpense/ScheduledExpenseEntry";
 import { NewScheduledExpense } from "../scheduleExpense/NewScheduledExpenseInput";
-import { type ScheduledExpense } from "../../../context/startPeriodTypes";
+import { type ScheduledExpense } from "../../../repositories/periodManagement/IPeriodManagementRepository";
 import { useStartNewPeriod } from "../../../context/StartNewPeriodContext";
 import { months } from "../../../util/months";
 import { useState } from "react";
