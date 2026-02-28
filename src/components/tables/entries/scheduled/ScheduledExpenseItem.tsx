@@ -5,12 +5,7 @@ import { Box, IconButton, Tooltip, Typography } from "@mui/material";
 import { toEuro } from "../../../../util/money";
 import { ProgressBar } from "../../../general/ProgressBar";
 import { easyDate, hasPassed } from "../../../../util/easyDates";
-import { DontBreak } from "../../../general/DontBreak";
-import {
-  CheckCircleOutline,
-  EditLocation,
-  EditOutlined,
-} from "@mui/icons-material";
+import { CheckCircleOutline, EditOutlined } from "@mui/icons-material";
 import { periodManagementService } from "../../../../context/DatabaseContext";
 import { ItemCompleteBody } from "./ItemCompleteBody";
 

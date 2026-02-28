@@ -4,7 +4,6 @@ import { useDataClient } from "../../context/DatabaseContext";
 import {
   mapPlanCategories,
   type PlanCategories,
-  type ScheduledExpense,
 } from "../../repositories/periodManagement/IPeriodManagementRepository";
 import { CategoryList } from "./CategoryList";
 
