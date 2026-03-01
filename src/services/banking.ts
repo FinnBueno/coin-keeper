@@ -246,7 +246,7 @@ function trimContentAboveSalary(statementsPerDay: BankExport): BankExport {
         ...dayWithSalaryValue,
         items: Object.entries(dayWithSalaryValue.items)
           .splice(entryIndexOfSalaryEntry + 1)
-          .reduce((total, [k, v], i) => ({ ...total, [i]: v }), {}),
+          .reduce((total, [_, v], i) => ({ ...total, [i]: v }), {}),
       },
     ];
 
