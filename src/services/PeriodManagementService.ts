@@ -3,12 +3,14 @@ import type {
   IPeriodManagementRepository,
   MonthlyPeriod,
 } from "../repositories/periodManagement/IPeriodManagementRepository";
+import type { BankExport, BankExportLastRun } from "./banking";
 
 const CURRENT_PERIOD_KEY = "currentPeriod";
 
 export class PeriodManagementService {
   private repository: IPeriodManagementRepository;
   private currentPeriod?: MonthlyPeriod;
+  private lastRunResult?: BankExportLastRun;
 
   constructor(repository: IPeriodManagementRepository) {
     this.repository = repository;
@@ -18,11 +20,15 @@ export class PeriodManagementService {
     return this.currentPeriod;
   }
 
+  public getLastRunResult(): BankExportLastRun | undefined {
+    return this.lastRunResult;
+  }
+
   public async fetchCurrentPeriod(): Promise<MonthlyPeriod | undefined> {
     return await this.repository.getPeriodById(CURRENT_PERIOD_KEY);
   }
 
-  subscribeToCurrentPeriod(onChange: () => void): () => void {
+  public subscribeToCurrentPeriod(onChange: () => void): () => void {
     const unsubscribe = this.repository.subscribeToPeriod(
       CURRENT_PERIOD_KEY,
       (currentPeriod: MonthlyPeriod) => {
@@ -31,6 +37,24 @@ export class PeriodManagementService {
       },
     );
     return unsubscribe;
+  }
+
+  public subscribeToLastRunResult(onChange: () => void): () => void {
+    const unsubscribe = this.repository.subscribeToLastRunResult(
+      (lastRunResult: BankExportLastRun) => {
+        this.lastRunResult = lastRunResult;
+        onChange();
+      },
+    );
+    return unsubscribe;
+  }
+
+  public registerBankEntries(data: BankExport): any {
+    const entries = Object.values(data.dayEntries)
+      .map((day) => Object.values(day.items))
+      .flat();
+    this.repository.insertBankEntries(CURRENT_PERIOD_KEY, entries);
+    this.repository.setLastRunResult(data.scannedUpTo);
   }
 
   public async startNewPeriod(

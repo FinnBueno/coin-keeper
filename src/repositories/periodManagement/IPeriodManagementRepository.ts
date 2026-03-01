@@ -1,6 +1,10 @@
 import { z } from "zod";
 import { months, monthMaxDays, type Months } from "../../util/months";
 import { typedObjectKeys } from "../../util/types";
+import type {
+  BankExportLastRun,
+  BankExportStatement,
+} from "../../services/banking";
 
 export interface MonthlyPeriod {
   id: string;
@@ -18,12 +22,20 @@ export interface IPeriodManagementRepository {
     id: string,
     callback: (currentPeriod: MonthlyPeriod) => void,
   ): () => void;
+  subscribeToLastRunResult(
+    callback: (lastRunResult: BankExportLastRun) => void,
+  ): () => void;
   getPeriodById(currentPeriodId: string): Promise<MonthlyPeriod>;
   upsertPeriodById(id: string, period: MonthlyPeriod): Promise<void>;
   setClosedManually(
     periodId: string,
     expectedExpenseId: string,
     value: boolean,
+  ): Promise<void>;
+  setLastRunResult(data: BankExportLastRun): Promise<void>;
+  insertBankEntries(
+    periodId: string,
+    entries: BankExportStatement[],
   ): Promise<void>;
 }
 
@@ -44,6 +56,8 @@ export const planCategories = {
 
 export type PlanCategories = typeof planCategories;
 
+export type PlanCategory = keyof PlanCategories;
+
 export const mapPlanCategories = <T>(
   fn: (id: keyof PlanCategories, value: string) => T,
 ) =>
@@ -57,6 +71,8 @@ export const planTypes = {
 };
 
 export type PlanTypes = typeof planTypes;
+
+export type PlanType = keyof PlanTypes;
 
 export const mapPlanTypes = <T>(
   fn: (id: keyof PlanTypes, value: string) => T,
@@ -96,7 +112,9 @@ const planSchema = z.object({
   isClosedManually: z.boolean().optional(),
 });
 
-export type ScheduledExpense = z.infer<typeof planSchema>;
+export type ScheduledExpense = z.infer<typeof planSchema> & {
+  id: string;
+};
 
 export interface SpontaneousExpenses {
   title: string;

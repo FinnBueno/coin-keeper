@@ -61,6 +61,7 @@ export const FinancialTables: FC = () => {
       <Flex position="absolute" px={1} pb={1} gap={1} top={0} bottom={0}>
         {mapPlanCategories((categoryId, categoryName) => (
           <CategoryList
+            key={categoryId}
             title={categoryName}
             scheduledExpenses={planning.scheduledExpenses
               .map((item, index) => ({ item, index }))

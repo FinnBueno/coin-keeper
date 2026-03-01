@@ -1,9 +1,7 @@
 import {
   createContext,
-  useCallback,
   useContext,
   useMemo,
-  useRef,
   useSyncExternalStore,
   type FC,
   type ReactNode,
@@ -12,8 +10,8 @@ import type { MonthPlanning } from "../repositories/periodManagement/IPeriodMana
 import { PeriodManagementService } from "../services/PeriodManagementService";
 import { FirebasePeriodManagementRepository } from "../repositories/periodManagement/PeriodManagementRepository";
 import type { MonthlyPeriod } from "../repositories/periodManagement/IPeriodManagementRepository";
-import { PersonalVideoSharp } from "@mui/icons-material";
 import { GlobalLoadingScreen } from "../components/general/GlobalLoadingScreen";
+import type { BankExport } from "../services/banking";
 
 interface DataClient {
   startNewPeriod: (
@@ -23,37 +21,39 @@ interface DataClient {
     personalSpending: number,
     planning: MonthPlanning,
   ) => void;
-  currentPeriod: MonthlyPeriod | undefined;
+  registerBankEntries: (data: BankExport) => void;
+  currentPeriod?: MonthlyPeriod;
+  lastRunResult?: BankExport["scannedUpTo"];
 }
 
 const DataClientContext = createContext<DataClient>({
   startNewPeriod: () => {},
+  registerBankEntries: () => {},
   currentPeriod: undefined,
+  lastRunResult: undefined,
 });
 
 export const periodManagementService = new PeriodManagementService(
   new FirebasePeriodManagementRepository(),
 );
 
-const getSnapshot = periodManagementService.getCurrentPeriod.bind(
+const getCurrentPeriodSnapshot = periodManagementService.getCurrentPeriod.bind(
   periodManagementService,
 );
 
-// let pendingPromise: Promise<void> | undefined;
-// let releaseLoadingState: (() => void) | undefined = undefined;
+const subscribeToCurrentPeriod =
+  periodManagementService.subscribeToCurrentPeriod.bind(
+    periodManagementService,
+  );
 
-const subscribe = periodManagementService.subscribeToCurrentPeriod.bind(
+const getLastRunResultSnapshot = periodManagementService.getLastRunResult.bind(
   periodManagementService,
 );
-/*
-(newPeriod) => {
-  console.log("new period received", newPeriod);
-  if (newPeriod) {
-    if (releaseLoadingState) releaseLoadingState();
-    pendingPromise = undefined;
-    releaseLoadingState = undefined;
-  }
-*/
+
+const subscribeToLastRunResult =
+  periodManagementService.subscribeToLastRunResult.bind(
+    periodManagementService,
+  );
 
 export const DataClientProvider: FC<{ children: ReactNode }> = ({
   children,
@@ -79,9 +79,19 @@ export const DataClientProvider: FC<{ children: ReactNode }> = ({
   );
 
   const currentPeriod = useSyncExternalStore<MonthlyPeriod | undefined>(
-    subscribe,
-    getSnapshot,
+    subscribeToCurrentPeriod,
+    getCurrentPeriodSnapshot,
   );
+
+  const registerBankEntries = useMemo(
+    () => (data: BankExport) =>
+      periodManagementService.registerBankEntries(data),
+    [],
+  );
+
+  const lastRunResult = useSyncExternalStore<
+    BankExport["scannedUpTo"] | undefined
+  >(subscribeToLastRunResult, getLastRunResultSnapshot);
 
   if (!currentPeriod) return <GlobalLoadingScreen />;
 
@@ -90,6 +100,8 @@ export const DataClientProvider: FC<{ children: ReactNode }> = ({
       value={{
         startNewPeriod,
         currentPeriod,
+        registerBankEntries,
+        lastRunResult,
       }}
     >
       {children}

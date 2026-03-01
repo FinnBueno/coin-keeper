@@ -51,7 +51,6 @@ export function hasPassed(at: DateAt) {
   const monthIndex = months.findIndex((v) => v === at.month);
   if (monthIndex === -1)
     throw new Error(`Month ${at.month} is not a valid month`);
-  console.log(now.getMonth(), now.getDate(), monthIndex, at.dayofmonth);
   if (monthIndex > now.getMonth()) {
     // the event is in the next month
     return false;

@@ -26,6 +26,8 @@ const convertInputToScheduledExpense = (
 ): ScheduledExpense => ({
   ...planInput,
   at: parseEasyDate(planInput.at),
+  expenseEntries: [],
+  id: crypto.randomUUID(),
 });
 
 const dateInputSchema = z.string("Required").refine(
@@ -158,7 +160,9 @@ export const NewScheduledExpense: FC<Props> = ({
             onBlur={() => touched["type"] && validateField("type")}
           >
             {mapPlanTypes((key, value) => (
-              <MenuItem value={key}>{value}</MenuItem>
+              <MenuItem key={key} value={key}>
+                {value}
+              </MenuItem>
             ))}
           </Selectable>
           <Selectable
@@ -168,7 +172,9 @@ export const NewScheduledExpense: FC<Props> = ({
             onBlur={() => touched["category"] && validateField("category")}
           >
             {mapPlanCategories((key, value) => (
-              <MenuItem value={key}>{value}</MenuItem>
+              <MenuItem key={key} value={key}>
+                {value}
+              </MenuItem>
             ))}
           </Selectable>
           <TextInput

@@ -6,7 +6,7 @@ import type {
 import { Flex } from "../general/Flex";
 import { Divider, Typography } from "@mui/material";
 import { ProgressBar } from "../general/ProgressBar";
-import { ScheduleExpenseItem } from "./entries/scheduled/ScheduledExpenseItem";
+import { ScheduledExpenseItem } from "./entries/scheduled/ScheduledExpenseItem";
 
 interface Props {
   title: string;
@@ -61,7 +61,12 @@ export const CategoryList: FC<Props> = ({
             }}
           >
             {Object.entries(scheduledExpenses).map(([key, item]) => (
-              <ScheduleExpenseItem id={key} content={item} color={mainColor} />
+              <ScheduledExpenseItem
+                key={key}
+                id={key}
+                content={item}
+                color={mainColor}
+              />
             ))}
           </Flex>
         </>

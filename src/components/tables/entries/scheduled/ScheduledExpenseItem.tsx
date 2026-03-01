@@ -15,7 +15,7 @@ interface Props {
   color: string;
 }
 
-export const ScheduleExpenseItem: FC<Props> = ({ id, content, color }) => {
+export const ScheduledExpenseItem: FC<Props> = ({ id, content, color }) => {
   const spent =
     content.expenseEntries?.reduce(
       (total, current) => total + current.amount,

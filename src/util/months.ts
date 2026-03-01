@@ -13,7 +13,22 @@ export const months = [
   "december",
 ] as const;
 
-export type Months = typeof months;
+const dutchMonths = [
+  "januari",
+  "februari",
+  "maart",
+  "april",
+  "mei",
+  "juni",
+  "juli",
+  "augustus",
+  "september",
+  "october",
+  "november",
+  "december",
+] as const;
+
+export type Months = (typeof months)[number];
 
 export const monthMaxDays: Record<string, () => number> = {
   january: () => 31,
@@ -37,3 +52,7 @@ export const indexedMonthMaxDays = Object.values(monthMaxDays).reduce(
   },
   {} as Record<number, () => number>,
 );
+
+export const dutchMonthNameToIndex = (dutchMonthName: string) => {
+  return dutchMonths.findIndex((m) => m === dutchMonthName);
+};

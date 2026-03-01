@@ -1,4 +1,4 @@
-import { Box, Typography } from "@mui/material";
+import { Box, Link, Typography } from "@mui/material";
 import type { FC } from "react";
 import { useDataClient } from "../../context/DatabaseContext";
 import { toEuro } from "../../util/money";
