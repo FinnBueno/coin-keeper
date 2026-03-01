@@ -15,6 +15,7 @@ export interface MonthlyPeriod {
   planning: MonthPlanning;
   startTime: number;
   endTimestamp?: number;
+  bankEntries: BankExportStatement[];
 }
 
 export interface IPeriodManagementRepository {
@@ -97,18 +98,12 @@ const dateSchema = z
 
 export type DateAt = z.infer<typeof dateSchema>;
 
-const expenseEntrySchema = z.object({
-  amount: z.coerce.number().gt(0),
-  at: dateSchema,
-});
-
 const planSchema = z.object({
   title: z.string("Required"),
   type: z.enum(typedObjectKeys(planTypes)),
   category: z.enum(typedObjectKeys(planCategories)),
   amount: z.coerce.number().gt(0),
   at: dateSchema,
-  expenseEntries: z.array(expenseEntrySchema).default([]),
   isClosedManually: z.boolean().optional(),
 });
 

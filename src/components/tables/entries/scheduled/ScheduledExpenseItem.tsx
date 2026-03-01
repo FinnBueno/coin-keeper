@@ -8,21 +8,27 @@ import { easyDate, hasPassed } from "../../../../util/easyDates";
 import { CheckCircleOutline, EditOutlined } from "@mui/icons-material";
 import { periodManagementService } from "../../../../context/DatabaseContext";
 import { ItemCompleteBody } from "./ItemCompleteBody";
+import type { BankExportStatement } from "../../../../services/banking";
 
 interface Props {
   id: string;
   content: ScheduledExpense;
   color: string;
+  expenseEntries: BankExportStatement[];
 }
 
-export const ScheduledExpenseItem: FC<Props> = ({ id, content, color }) => {
-  const spent =
-    content.expenseEntries?.reduce(
-      (total, current) => total + current.amount,
-      0,
-    ) ?? 0;
+export const ScheduledExpenseItem: FC<Props> = ({
+  id,
+  content,
+  color,
+  expenseEntries,
+}) => {
+  let spent =
+    expenseEntries.reduce((total, current) => total + current.amount, 0) ?? 0;
+  spent *= -1;
+
   const isComplete =
-    (hasPassed(content.at) && (content.expenseEntries?.length ?? 0) > 0) ||
+    (hasPassed(content.at) && (expenseEntries.length ?? 0) > 0) ||
     content.isClosedManually;
 
   const handleManualComplete = () =>
@@ -71,9 +77,11 @@ export const ScheduledExpenseItem: FC<Props> = ({ id, content, color }) => {
               </Flex>
             </>
           ) : (
-            <Typography>
-              {toEuro(content.amount)} on {easyDate(content.at)}
-            </Typography>
+            <Tooltip title={`${toEuro(spent)} so far`}>
+              <Typography>
+                {toEuro(content.amount)} on {easyDate(content.at)}
+              </Typography>
+            </Tooltip>
           )}
         </>
       )}

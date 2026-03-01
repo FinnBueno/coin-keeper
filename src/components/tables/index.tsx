@@ -73,7 +73,9 @@ export const FinancialTables: FC = () => {
                 }),
                 {},
               )}
-            spontaneousExpenses={{}}
+            bankEntries={currentPeriod.bankEntries.filter(
+              (be) => be.category === categoryId,
+            )}
             styles={categoryStyles[categoryId]}
             maxSpending={
               categoryId === "food"

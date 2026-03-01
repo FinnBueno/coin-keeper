@@ -7,17 +7,18 @@ import { Flex } from "../general/Flex";
 import { Divider, Typography } from "@mui/material";
 import { ProgressBar } from "../general/ProgressBar";
 import { ScheduledExpenseItem } from "./entries/scheduled/ScheduledExpenseItem";
+import type { BankExportStatement } from "../../services/banking";
 
 interface Props {
   title: string;
   scheduledExpenses: Record<string, ScheduledExpense>;
-  spontaneousExpenses: Record<string, SpontaneousExpenses>;
   styles: {
     main: string;
     background: string;
     icon: string;
   };
   maxSpending?: number;
+  bankEntries: BankExportStatement[];
 }
 
 export const CategoryList: FC<Props> = ({
@@ -25,6 +26,7 @@ export const CategoryList: FC<Props> = ({
   scheduledExpenses,
   styles,
   maxSpending,
+  bankEntries,
 }) => {
   const { main: mainColor, background: bgColor, icon } = styles;
   const listOfScheduledExpenses = Object.values(scheduledExpenses);
@@ -32,6 +34,7 @@ export const CategoryList: FC<Props> = ({
     (total, current) => total + current.amount,
     0,
   );
+
   return (
     <Flex
       minWidth="300px"
@@ -66,6 +69,9 @@ export const CategoryList: FC<Props> = ({
                 id={key}
                 content={item}
                 color={mainColor}
+                expenseEntries={bankEntries.filter(
+                  (be) => be.plannedExpenseId === item.id,
+                )}
               />
             ))}
           </Flex>

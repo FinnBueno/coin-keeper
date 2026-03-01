@@ -26,7 +26,6 @@ const convertInputToScheduledExpense = (
 ): ScheduledExpense => ({
   ...planInput,
   at: parseEasyDate(planInput.at),
-  expenseEntries: [],
   id: crypto.randomUUID(),
 });
 

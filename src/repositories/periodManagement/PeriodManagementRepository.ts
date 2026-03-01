@@ -35,9 +35,13 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
     id: string,
     callback: (period: MonthlyPeriod) => void,
   ): () => void {
-    return onValue(child(this.periodListRef, id), (snapshot) =>
-      callback(snapshot.val() as MonthlyPeriod),
-    );
+    return onValue(child(this.periodListRef, id), (snapshot) => {
+      const value = snapshot.val();
+      return callback({
+        ...value,
+        bankEntries: Object.values(value.bankEntries),
+      } as MonthlyPeriod);
+    });
   }
 
   public subscribeToLastRunResult(
