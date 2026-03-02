@@ -1,13 +1,12 @@
 import type { FC } from "react";
-import type {
-  ScheduledExpense,
-  SpontaneousExpenses,
-} from "../../repositories/periodManagement/IPeriodManagementRepository";
+import type { ScheduledExpense } from "../../repositories/periodManagement/IPeriodManagementRepository";
 import { Flex } from "../general/Flex";
 import { Divider, Typography } from "@mui/material";
 import { ProgressBar } from "../general/ProgressBar";
 import { ScheduledExpenseItem } from "./entries/scheduled/ScheduledExpenseItem";
 import type { BankExportStatement } from "../../services/banking";
+import { SpontaneousSpendingSection } from "./entries/spontaneous/SpontaneousSpendingSection";
+import { toEuro } from "../../util/money";
 
 interface Props {
   title: string;
@@ -30,14 +29,13 @@ export const CategoryList: FC<Props> = ({
 }) => {
   const { main: mainColor, background: bgColor, icon } = styles;
   const listOfScheduledExpenses = Object.values(scheduledExpenses);
-  const totalSpent = listOfScheduledExpenses.reduce(
-    (total, current) => total + current.amount,
-    0,
-  );
+  const totalSpent =
+    bankEntries.reduce((total, current) => total + current.amount, 0) * -1;
 
   return (
     <Flex
       minWidth="300px"
+      maxWidth="300px"
       borderRadius={4}
       p={1}
       border={`solid 2px ${mainColor}`}
@@ -51,39 +49,49 @@ export const CategoryList: FC<Props> = ({
         <ProgressBar value={totalSpent} max={maxSpending} color={mainColor} />
       ) : null}
       <Divider />
-      {listOfScheduledExpenses.length > 0 ? (
-        <>
-          <Typography variant="h6" fontWeight="bold">
-            Planned expenses
-          </Typography>
-          <Flex
-            flexDirection="column"
-            gap={1}
-            sx={{
-              overflowY: "scroll",
-            }}
-          >
-            {Object.entries(scheduledExpenses).map(([key, item]) => (
-              <ScheduledExpenseItem
-                key={key}
-                id={key}
-                content={item}
-                color={mainColor}
-                expenseEntries={bankEntries.filter(
-                  (be) => be.plannedExpenseId === item.id,
-                )}
-              />
-            ))}
-          </Flex>
-        </>
-      ) : (
-        <Typography variant="subtitle1">Nothing planned.</Typography>
-      )}
-      <Divider />
-      <Typography variant="h6" fontWeight="bold">
-        Spontaneous spending
-      </Typography>
-      {/* <SpontaneousSpendingSection items={} /> */}
+      <Flex
+        flexDirection="column"
+        width="100%"
+        sx={{
+          overflowY: "scroll",
+        }}
+      >
+        {listOfScheduledExpenses.length > 0 ? (
+          <>
+            <Typography variant="h6" fontWeight="bold">
+              Planned expenses
+            </Typography>
+            <Flex
+              flexDirection="column"
+              gap={1}
+              sx={{
+                overflowY: "scroll",
+              }}
+            >
+              {Object.entries(scheduledExpenses).map(([key, item]) => (
+                <ScheduledExpenseItem
+                  key={key}
+                  id={key}
+                  content={item}
+                  color={mainColor}
+                  expenseEntries={bankEntries.filter(
+                    (be) => be.plannedExpenseId === item.id,
+                  )}
+                />
+              ))}
+            </Flex>
+          </>
+        ) : (
+          <Typography variant="subtitle1">Nothing planned.</Typography>
+        )}
+        <Divider />
+        <Typography variant="h6" fontWeight="bold">
+          Spontaneous spending
+        </Typography>
+        <SpontaneousSpendingSection
+          items={bankEntries.filter((be) => !be.plannedExpenseId)}
+        />
+      </Flex>
     </Flex>
   );
 };

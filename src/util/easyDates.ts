@@ -1,8 +1,5 @@
 import { capitalize } from "@mui/material";
-import type {
-  DateAt,
-  ScheduledExpense,
-} from "../repositories/periodManagement/IPeriodManagementRepository";
+import type { DateAt } from "../repositories/periodManagement/IPeriodManagementRepository";
 import { months } from "./months";
 
 export function parseEasyDate(inputAt: string): DateAt {
@@ -59,4 +56,29 @@ export function hasPassed(at: DateAt) {
     if (at.dayofmonth > now.getDate()) return false;
     return true;
   }
+}
+
+export function parseNumericDate(numericDate: number) {
+  // 5375.76
+  const day = numericDate % 100;
+  const month = Math.floor(numericDate / 100);
+  const date = new Date();
+  const currentMonth = date.getMonth();
+  let year = date.getFullYear();
+  if (currentMonth < month) {
+    year--;
+  }
+  const dayAndMonth = easyDate({
+    dayofmonth: day,
+    month: months[month],
+  });
+  return `${dayAndMonth} '${Math.floor(year % 100)}`;
+}
+
+export function parseTimestamp(timestamp: number) {
+  const date = new Date(timestamp);
+  return `${easyDate({
+    dayofmonth: date.getDate(),
+    month: months[date.getMonth()],
+  })} '${Math.floor(date.getFullYear() % 100)}`;
 }

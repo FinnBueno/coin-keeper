@@ -39,7 +39,11 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
       const value = snapshot.val();
       return callback({
         ...value,
-        bankEntries: Object.values(value.bankEntries),
+        planning: {
+          ...value.planning,
+          scheduledExpenses: value.scheduledExpenses ?? [],
+        },
+        bankEntries: Object.values(value.bankEntries ?? {}),
       } as MonthlyPeriod);
     });
   }

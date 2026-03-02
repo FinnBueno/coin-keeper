@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { months, monthMaxDays, type Months } from "../../util/months";
+import { months, monthMaxDays } from "../../util/months";
 import { typedObjectKeys } from "../../util/types";
 import type {
   BankExportLastRun,
@@ -44,7 +44,6 @@ export interface MonthPlanning {
   travelBudget: number;
   foodBudget: number;
   scheduledExpenses: ScheduledExpense[];
-  spontaneousExpenses: SpontaneousExpenses[];
 }
 
 export const planCategories = {
@@ -110,13 +109,3 @@ const planSchema = z.object({
 export type ScheduledExpense = z.infer<typeof planSchema> & {
   id: string;
 };
-
-export interface SpontaneousExpenses {
-  title: string;
-  category: PlanCategories;
-  amount: number;
-  at: {
-    dayofmonth: number;
-    month: Months;
-  };
-}

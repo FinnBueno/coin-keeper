@@ -32,7 +32,6 @@ export const StartNewPeriodContextProvider: FC<{ children: ReactNode }> = ({
     foodBudget: 0,
     travelBudget: 0,
     scheduledExpenses: [],
-    spontaneousExpenses: [],
   });
 
   return (
