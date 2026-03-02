@@ -169,12 +169,12 @@ export const DataClientProvider: FC<{ children: ReactNode }> = ({
       let sharedSaving = currentPeriod.bankEntries
         .filter((be) => be.title === "C.E.S Kroon en/of F. Bon")
         .reduce((t, c) => t - c.amount, 0);
-      if (!sharedSaving) sharedSaving = currentPeriod.toSharedAccount;
+      if (!sharedSaving) sharedSaving = toSharedAccount;
 
       let personalSaving = currentPeriod.bankEntries
         .filter((be) => be.title === "Sparen")
         .reduce((t, c) => t - c.amount, 0);
-      if (!personalSaving) personalSaving = currentPeriod.toPersonalAccount;
+      if (!personalSaving) personalSaving = toPersonalAccount;
 
       return (
         startAmount -

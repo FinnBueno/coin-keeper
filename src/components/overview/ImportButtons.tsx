@@ -5,7 +5,7 @@ import { ImportExpensesFlow } from "../importExpensesFlow";
 
 export const ImportButtons: FC = () => {
   return (
-    <Flex gap={2} mt={2}>
+    <Flex gap={2} mt={2} mb={1}>
       <ImportExpensesFlow />
       <NewPeriodFlow />
     </Flex>

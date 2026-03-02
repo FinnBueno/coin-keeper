@@ -35,9 +35,6 @@ export const BalanceInfo: FC = () => {
       justifyContent="space-between"
       flexDirection="column"
     >
-      <Typography variant="h5" mb={1}>
-        Savings for this month:
-      </Typography>
       <Typography variant="body1">
         {hasSharedSaveBeenMade ? (
           <>

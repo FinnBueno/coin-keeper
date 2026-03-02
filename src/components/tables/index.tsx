@@ -49,16 +49,17 @@ export const FinancialTables: FC = () => {
 
   return (
     <Flex
-      maxWidth="lg"
+      // maxWidth="lg"
       width="100%"
       flexDirection="column"
       position="relative"
       flexGrow={1}
       sx={{
-        overflowX: "overlay",
+        overflowX: "scroll",
       }}
     >
       <Flex position="absolute" px={1} pb={1} gap={1} top={0} bottom={0}>
+        <Flex width="calc((100vw - 1200px) / 2 + 12px)"></Flex>
         {mapPlanCategories((categoryId, categoryName) => (
           <CategoryList
             key={categoryId}
@@ -86,6 +87,7 @@ export const FinancialTables: FC = () => {
             }
           />
         ))}
+        <Flex width="calc((100vw - 1200px) / 2 + 12px)"></Flex>
       </Flex>
     </Flex>
   );
