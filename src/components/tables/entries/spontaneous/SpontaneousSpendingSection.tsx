@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import type { BankExportStatement } from "../../../../services/banking";
 import { Flex } from "../../../general/Flex";
-import { Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography } from "@mui/material";
 import { toEuro } from "../../../../util/money";
 
 interface Props {
@@ -22,8 +22,23 @@ export const SpontaneousSpendingSection: FC<Props> = ({ items }) => {
             {/* todo: allow the title to be changed */}
             {item.title}
           </Typography>
+
           <Typography>
-            {toEuro(item.amount)} on {item.dateLabel}
+            <Box
+              component="span"
+              sx={{
+                px: "2px",
+                backgroundColor: item.amount < 0 ? "#fdf5f5" : "#f6ffe0",
+                border:
+                  item.amount < 0
+                    ? "solid 1.5px #fa5336"
+                    : "solid 1.5px #31c34a",
+                borderRadius: "4px",
+              }}
+            >
+              {toEuro(item.amount)}
+            </Box>{" "}
+            on {item.dateLabel}
           </Typography>
           <Divider />
         </Flex>
