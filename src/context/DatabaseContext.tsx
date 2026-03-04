@@ -148,7 +148,10 @@ export const DataClientProvider: FC<{ children: ReactNode }> = ({
           .filter((be) => !be.plannedExpenseId)
           .filter(
             (be) =>
-              be.title !== "Sparen" && be.title !== "C.E.S Kroon en/of F. Bon",
+              be.title !== "Sparen" &&
+              be.title !== "C.E.S Kroon en/of F. Bon" &&
+              be.category !== "travel" &&
+              be.category !== "food",
           )
           .reduce((t, c) => t + c.amount, 0) * -1;
 
