@@ -4,7 +4,7 @@ import coinImage from "../../assets/coin.png";
 export const Header = () => (
   <Box
     sx={(theme) => ({ backgroundColor: theme.palette.primary.main })}
-    py={2}
+    py={1}
     display="flex"
     justifyContent="center"
     width="100%"
@@ -15,12 +15,12 @@ export const Header = () => (
     <Box
       component="img"
       src={coinImage}
-      width="48px"
-      height="48px"
+      width="36px"
+      height="36px"
       sx={{ filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.4))" }}
     />
     <Typography
-      variant="h3"
+      variant="h4"
       sx={{
         background:
           "linear-gradient(90deg, #b8860b, #ffd700, #fff8a0, #ffd700, #b8860b)",

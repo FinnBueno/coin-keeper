@@ -41,6 +41,9 @@ export const theme = createTheme({
         primary: "#e6e8ee",
         secondary: "#a6adbb",
       },
+      primary: {
+        main: "#145ea8",
+      },
       divider: "rgba(255,255,255,0.12)",
     }),
     events: isDark
