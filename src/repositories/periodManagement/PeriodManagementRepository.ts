@@ -18,24 +18,28 @@ import type {
   BankExportLastRun,
   BankExportStatement,
 } from "../../services/banking";
+import type { IAuthService } from "../../services/auth/IAuthService";
 
 export class FirebasePeriodManagementRepository implements IPeriodManagementRepository {
   private db: Database;
-  private periodListRef: DatabaseReference;
-  private lastRunResultRef: DatabaseReference;
+  private periodListRef: () => DatabaseReference;
+  private lastRunResultRef: () => DatabaseReference;
+  private auth: IAuthService;
 
-  constructor() {
+  constructor(auth: IAuthService) {
+    this.auth = auth;
     this.db = getDatabase(firebaseApp);
     const mainRef = ref(this.db);
-    this.periodListRef = child(mainRef, "periods");
-    this.lastRunResultRef = child(mainRef, "lastRunResult");
+    this.periodListRef = () => child(mainRef, `${auth.getUserId()}/periods`);
+    this.lastRunResultRef = () =>
+      child(mainRef, `${auth.getUserId()}/lastRunResult`);
   }
 
   public subscribeToPeriod(
     id: string,
     callback: (period: MonthlyPeriod) => void,
   ): () => void {
-    return onValue(child(this.periodListRef, id), (snapshot) => {
+    return onValue(child(this.periodListRef(), id), (snapshot) => {
       const value = snapshot.val();
       return callback({
         ...value,
@@ -51,20 +55,23 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
   public subscribeToLastRunResult(
     callback: (period: BankExportLastRun) => void,
   ): () => void {
-    return onValue(this.lastRunResultRef, (snapshot) =>
+    return onValue(this.lastRunResultRef(), (snapshot) =>
       callback(snapshot.val() as BankExportLastRun),
     );
   }
 
   public async setLastRunResult(data: BankExportLastRun): Promise<void> {
-    await set(this.lastRunResultRef, data);
+    await set(this.lastRunResultRef(), data);
   }
 
   public async insertBankEntries(
     periodId: string,
     entries: BankExportStatement[],
   ): Promise<void> {
-    const bankEntriesRef = child(this.periodListRef, `${periodId}/bankEntries`);
+    const bankEntriesRef = child(
+      this.periodListRef(),
+      `${periodId}/bankEntries`,
+    );
     for (const entry of entries) {
       const itemRef = push(bankEntriesRef);
       if (!entry.plannedExpenseId) delete entry["plannedExpenseId"];
@@ -73,7 +80,7 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
   }
 
   public async getPeriodById(periodId: string): Promise<MonthlyPeriod> {
-    const snapshot = await get(child(this.periodListRef, periodId));
+    const snapshot = await get(child(this.periodListRef(), periodId));
     return snapshot.val() as MonthlyPeriod;
   }
 
@@ -81,7 +88,7 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
     id: string,
     period: MonthlyPeriod,
   ): Promise<void> {
-    return await set(child(this.periodListRef, id), period);
+    return await set(child(this.periodListRef(), id), period);
   }
 
   public async setClosedManually(
@@ -91,7 +98,7 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
   ): Promise<void> {
     return await set(
       child(
-        this.periodListRef,
+        this.periodListRef(),
         `${periodId}/planning/scheduledExpenses/${expectedExpenseId}/isClosedManually`,
       ),
       value,

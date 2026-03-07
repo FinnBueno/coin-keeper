@@ -1,17 +1,16 @@
-import { BrowserRouter, Route, Routes } from "react-router";
-import { MainPage } from "./pages/MainPage";
 import { AppLayout } from "./components/template/AppLayout";
 import { DataClientProvider } from "./context/DatabaseContext";
+import { useAuth } from "./hooks/useAuth";
+import { AuthPage } from "./pages/AuthPage";
+import { MainPage } from "./pages/MainPage";
 
 function App() {
+  const userId = useAuth();
+  if (!userId) return <AuthPage />;
   return (
     <DataClientProvider>
       <AppLayout>
-        <BrowserRouter>
-          <Routes>
-            <Route index element={<MainPage />} />
-          </Routes>
-        </BrowserRouter>
+        <MainPage />
       </AppLayout>
     </DataClientProvider>
   );
