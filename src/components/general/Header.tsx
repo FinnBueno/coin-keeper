@@ -1,35 +1,43 @@
-import { Box, Typography } from "@mui/material";
+import { AppBar, Box, IconButton, Toolbar, Typography } from "@mui/material";
 import coinImage from "../../assets/coin.png";
+import { Flex } from "./Flex";
+import { Settings } from "@mui/icons-material";
 
 export const Header = () => (
-  <Box
-    sx={(theme) => ({ backgroundColor: theme.palette.primary.main })}
-    py={1}
-    display="flex"
-    justifyContent="center"
-    width="100%"
-    mb={2}
-    alignItems="center"
-    gap={2}
-  >
-    <Box
-      component="img"
-      src={coinImage}
-      width="36px"
-      height="36px"
-      sx={{ filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.4))" }}
-    />
-    <Typography
-      variant="h4"
+  <AppBar position="sticky">
+    <Toolbar
       sx={{
-        background:
-          "linear-gradient(90deg, #b8860b, #ffd700, #fff8a0, #ffd700, #b8860b)",
-        WebkitBackgroundClip: "text",
-        WebkitTextFillColor: "transparent",
-        filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.4))",
+        width: "100%",
+        maxWidth: "lg",
+        mx: "auto",
+        alignItems: "center",
+        justifyContent: "space-between",
       }}
     >
-      Coin Keeper
-    </Typography>
-  </Box>
+      <Flex alignItems="center" gap={2}>
+        <Box
+          component="img"
+          src={coinImage}
+          width="36px"
+          height="36px"
+          sx={{ filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.4))" }}
+        />
+        <Typography
+          variant="h4"
+          sx={{
+            background:
+              "linear-gradient(90deg, #b8860b, #ffd700, #fff8a0, #ffd700, #b8860b)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            filter: "drop-shadow(1px 2px 2px rgba(0,0,0,0.4))",
+          }}
+        >
+          Coin Keeper
+        </Typography>
+      </Flex>
+      <IconButton>
+        <Settings fontSize="medium" />
+      </IconButton>
+    </Toolbar>
+  </AppBar>
 );

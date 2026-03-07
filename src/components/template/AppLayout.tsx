@@ -7,7 +7,7 @@ interface Props {
 }
 
 export const AppLayout: FC<Props> = ({ children }) => (
-  <Flex width="100%" height="100%" flexDirection="column">
+  <Flex width="100%" height="100%" flexDirection="column" gap={2}>
     <Header />
     <Flex flexGrow={1} justifyContent="center" width="100%">
       <Flex
