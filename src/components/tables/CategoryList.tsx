@@ -6,7 +6,7 @@ import { ProgressBar } from "../general/ProgressBar";
 import { ScheduledExpenseItem } from "./entries/scheduled/ScheduledExpenseItem";
 import type { BankExportStatement } from "../../services/banking";
 import { SpontaneousSpendingSection } from "./entries/spontaneous/SpontaneousSpendingSection";
-import { toEuro } from "../../util/money";
+import { isDark } from "../../style/theme";
 
 interface Props {
   title: string;

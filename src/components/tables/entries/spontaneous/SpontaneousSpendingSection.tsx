@@ -1,7 +1,7 @@
 import type { FC } from "react";
 import type { BankExportStatement } from "../../../../services/banking";
 import { Flex } from "../../../general/Flex";
-import { Box, Divider, Typography } from "@mui/material";
+import { Box, Divider, Typography, useTheme } from "@mui/material";
 import { toEuro } from "../../../../util/money";
 
 interface Props {
@@ -9,6 +9,7 @@ interface Props {
 }
 
 export const SpontaneousSpendingSection: FC<Props> = ({ items }) => {
+  const { palette } = useTheme();
   return (
     <Flex flexDirection="column">
       {items.map((item) => (
@@ -28,11 +29,11 @@ export const SpontaneousSpendingSection: FC<Props> = ({ items }) => {
               component="span"
               sx={{
                 px: "2px",
-                backgroundColor: item.amount < 0 ? "#fdf5f5" : "#f6ffe0",
-                border:
+                backgroundColor:
                   item.amount < 0
-                    ? "solid 1.5px #fa5336"
-                    : "solid 1.5px #31c34a",
+                    ? palette.moneyLabel.negative.background
+                    : palette.moneyLabel.positive.background,
+                border: `solid 1.5px ${item.amount < 0 ? palette.moneyLabel.negative.main : palette.moneyLabel.positive.main}`,
                 borderRadius: "4px",
               }}
             >

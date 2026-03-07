@@ -1,4 +1,5 @@
 import type { FC } from "react";
+import { useTheme } from "@mui/material";
 import { Flex } from "../general/Flex";
 import { useDataClient } from "../../context/DatabaseContext";
 import {
@@ -7,49 +8,23 @@ import {
 } from "../../repositories/periodManagement/IPeriodManagementRepository";
 import { CategoryList } from "./CategoryList";
 
-const categoryStyles: Record<
-  keyof PlanCategories,
-  { main: string; background: string; icon: string }
-> = {
-  // recurring expenses:
-  // main: #fabd05
-  // bg: #fff3cc
-  events: {
-    main: "#ea4336",
-    background: "#fde5e5",
-    icon: "🎭",
-  },
-  wantToHave: {
-    main: "#ff6d01",
-    background: "#fce5cd",
-    icon: "💫",
-  },
-  life: {
-    main: "#51b36a",
-    background: "#d9ead3",
-    icon: "🗓️",
-  },
-  travel: {
-    main: "#4285f4",
-    background: "#c9dbf8",
-    icon: "🚗",
-  },
-  food: {
-    main: "#bf76d1",
-    background: "#d4c9ee",
-    icon: "🥪",
-  },
+const categoryIcons: Record<keyof PlanCategories, string> = {
+  events: "🎭",
+  wantToHave: "💫",
+  life: "🗓️",
+  travel: "🚗",
+  food: "🥪",
 };
 
 export const FinancialTables: FC = () => {
   const { currentPeriod } = useDataClient();
+  const { palette } = useTheme();
   if (!currentPeriod) return null;
 
   const { planning } = currentPeriod!;
 
   return (
     <Flex
-      // maxWidth="lg"
       width="100%"
       flexDirection="column"
       position="relative"
@@ -77,7 +52,11 @@ export const FinancialTables: FC = () => {
             bankEntries={currentPeriod.bankEntries.filter(
               (be) => be.category === categoryId,
             )}
-            styles={categoryStyles[categoryId]}
+            styles={{
+              main: palette[categoryId].main,
+              background: palette[categoryId].background,
+              icon: categoryIcons[categoryId],
+            }}
             maxSpending={
               categoryId === "food"
                 ? planning.foodBudget

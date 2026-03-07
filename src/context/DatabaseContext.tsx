@@ -12,7 +12,6 @@ import { FirebasePeriodManagementRepository } from "../repositories/periodManage
 import type { MonthlyPeriod } from "../repositories/periodManagement/IPeriodManagementRepository";
 import { GlobalLoadingScreen } from "../components/general/GlobalLoadingScreen";
 import type { BankExport } from "../services/banking";
-import { FirebaseAuthService } from "../services/auth/FirebaseAuthService";
 import { authService } from "../hooks/useAuth";
 
 interface DataClient {
