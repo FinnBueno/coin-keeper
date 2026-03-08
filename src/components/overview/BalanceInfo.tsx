@@ -72,7 +72,7 @@ export const BalanceInfo: FC = () => {
           <Typography variant="h5">Current balance</Typography>
           <Typography
             fontSize={{
-              xs: "3rem",
+              xs: "2.5rem",
               sm: "3.75rem",
             }}
             variant="h2"
@@ -85,7 +85,7 @@ export const BalanceInfo: FC = () => {
           <Typography variant="h5">You'll end with...</Typography>
           <Typography
             fontSize={{
-              xs: "3rem",
+              xs: "2.5rem",
               sm: "3.75rem",
             }}
             variant="h2"
