@@ -67,7 +67,13 @@ export const BalanceInfo: FC = () => {
           </>
         )}
       </Typography>
-      <Flex gap={4}>
+      <Flex
+        gap={4}
+        justifyContent={{
+          xs: "space-between",
+          sm: "flex-start",
+        }}
+      >
         <Flex flexDirection="column">
           <Typography variant="h5">Current balance</Typography>
           <Typography
