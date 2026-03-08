@@ -3,9 +3,11 @@ import { initializeApp } from "firebase/app";
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
+console.log({ keyUsed: import.meta.env.VITE_FIREBASE_API_KEY });
+
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyAY-3TPV8ZlwiH2V7N_D-KCvz4yQ2lyGEc",
+  apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
   authDomain: "coin-keeper-6b5b0.firebaseapp.com",
   databaseURL:
     "https://coin-keeper-6b5b0-default-rtdb.europe-west1.firebasedatabase.app",
