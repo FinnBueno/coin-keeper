@@ -1,3 +1,5 @@
+import { useSettings } from "./useSettings";
+
 interface SavingCalculations {
   toSharedAccount: number;
   toPersonalAccount: number;
@@ -5,17 +7,12 @@ interface SavingCalculations {
 }
 
 export const useSavingCalculations = (salary: number): SavingCalculations => {
-  const getPersonalSpendingPerMonth = (): number =>
-    +(localStorage.getItem("persona-spending-per-month") ?? 0);
-  const getPersonalSavingsPerMonth = (): number =>
-    +(localStorage.getItem("personal-savings-per-month") ?? 0);
-
-  const toPersonalAccount = getPersonalSavingsPerMonth();
-  const personalSpending = getPersonalSpendingPerMonth();
+  const { personalSavingsPerMonth, personalSpendingPerMonth } = useSettings();
 
   return {
-    toPersonalAccount,
-    personalSpending,
-    toSharedAccount: salary - personalSpending - toPersonalAccount,
+    toPersonalAccount: personalSavingsPerMonth,
+    personalSpending: personalSpendingPerMonth,
+    toSharedAccount:
+      salary - personalSpendingPerMonth - personalSavingsPerMonth,
   };
 };

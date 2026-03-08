@@ -22,6 +22,7 @@ input[type="number"] {
 
 body {
   height: 100vh;
+  /* disable pull to refresh */
   overflow-y: hidden;
 }
 
