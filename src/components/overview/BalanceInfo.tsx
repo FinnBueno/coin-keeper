@@ -71,7 +71,7 @@ export const BalanceInfo: FC = () => {
         gap={4}
         justifyContent={{
           xs: "space-between",
-          sm: "flex-start",
+          md: "flex-start",
         }}
       >
         <Flex flexDirection="column">
