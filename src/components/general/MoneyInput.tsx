@@ -7,7 +7,7 @@ type Props = {
   label: string;
 } & TextFieldProps;
 
-export const MoneyInput: FC<Props> = ({ label, name, ...rest }: Props) => {
+export const MoneyInput: FC<Props> = ({ label, name }: Props) => {
   return (
     <TextInput
       label={label}

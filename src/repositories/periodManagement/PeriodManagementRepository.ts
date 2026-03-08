@@ -24,10 +24,8 @@ export class FirebasePeriodManagementRepository implements IPeriodManagementRepo
   private db: Database;
   private periodListRef: () => DatabaseReference;
   private lastRunResultRef: () => DatabaseReference;
-  private auth: IAuthService;
 
   constructor(auth: IAuthService) {
-    this.auth = auth;
     this.db = getDatabase(firebaseApp);
     const mainRef = ref(this.db);
     this.periodListRef = () => child(mainRef, `${auth.getUserId()}/periods`);

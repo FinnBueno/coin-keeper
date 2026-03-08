@@ -1,6 +1,5 @@
 import {
   FormControl,
-  FormLabel,
   InputLabel,
   Select,
   type SelectProps,
@@ -20,7 +19,7 @@ export const Selectable: FC<Props> = ({
   children,
   ...rest
 }: Props) => {
-  const [field, meta, helpers] = useField(name);
+  const [field] = useField(name);
   return (
     <FormControl fullWidth>
       {label && <InputLabel id={`${name}-label`}>{label}</InputLabel>}

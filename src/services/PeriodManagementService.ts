@@ -74,6 +74,7 @@ export class PeriodManagementService {
       personalSpending,
       planning,
       startTime: now,
+      bankEntries: [],
     };
 
     if (this.currentPeriod) {

@@ -1,7 +1,6 @@
 import { Typography } from "@mui/material";
 import { useState, type FC } from "react";
 import type { FlowStepComponent } from "./views/FlowStepType";
-import { StartNewPeriodContextProvider } from "../../context/StartNewPeriodContext";
 import { InputDataStep } from "./views/InputDataStep";
 import { RefineStep } from "./views/RefineStep";
 import { InputBankDataContextProvider } from "../../context/InputBankDataContext";

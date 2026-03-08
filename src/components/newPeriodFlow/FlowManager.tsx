@@ -3,15 +3,10 @@ import { useState, type FC } from "react";
 import { BeforeStartingStep } from "./views/BeforeStarting";
 import type { FlowStepComponent } from "./views/FlowStepType";
 import { EnterSalaryStep } from "./views/EnterSalary";
-import {
-  StartNewPeriodContextProvider,
-  useStartNewPeriod,
-} from "../../context/StartNewPeriodContext";
+import { StartNewPeriodContextProvider } from "../../context/StartNewPeriodContext";
 import { ShowTransfersStep } from "./views/ShowTransfers";
 import { PlanningStep } from "./views/Planning";
 import { ConfirmationStep } from "./views/Confirmation";
-import { useSavingCalculations } from "../../hooks/useSavingCalculations";
-import { useDataClient } from "../../context/DatabaseContext";
 
 type State =
   | "before_starting"
