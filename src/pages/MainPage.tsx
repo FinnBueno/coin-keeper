@@ -11,6 +11,9 @@ export const MainPage: FC = () => {
       flexDirection="column"
       gap={2}
       flexGrow={1}
+      sx={{
+        overflowX: "clip",
+      }}
     >
       <Overview />
       <FinancialTables />

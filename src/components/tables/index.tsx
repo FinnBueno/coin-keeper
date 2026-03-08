@@ -26,15 +26,31 @@ export const FinancialTables: FC = () => {
   return (
     <Flex
       width="100%"
+      maxWidth="100%"
       flexDirection="column"
       position="relative"
       flexGrow={1}
+      ml={1}
       sx={{
-        overflowX: "scroll",
+        overflowX: "auto",
+        scrollSnapType: {
+          xs: "x mandatory",
+          sm: "none",
+        },
       }}
     >
-      <Flex position="absolute" px={1} pb={1} gap={1} top={0} bottom={0}>
-        <Flex width="calc((100vw - 1200px) / 2 + 12px)"></Flex>
+      <Flex
+        position={"absolute"}
+        top={0}
+        bottom={0}
+        px={1}
+        pb={1}
+        gap={1}
+        sx={{ minWidth: "max-content" }}
+      >
+        <Flex
+          width={{ xs: "40px", sm: "calc((100vw - 1200px) / 2 + 12px)" }}
+        ></Flex>
         {mapPlanCategories((categoryId, categoryName) => (
           <CategoryList
             key={categoryId}
@@ -66,7 +82,9 @@ export const FinancialTables: FC = () => {
             }
           />
         ))}
-        <Flex width="calc((100vw - 1200px) / 2 + 12px)"></Flex>
+        <Flex
+          width={{ xs: "40px", sm: "calc((100vw - 1200px) / 2 + 12px)" }}
+        ></Flex>
       </Flex>
     </Flex>
   );

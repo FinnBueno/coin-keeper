@@ -33,8 +33,11 @@ export const CategoryList: FC<Props> = ({
 
   return (
     <Flex
-      minWidth="300px"
-      maxWidth="300px"
+      sx={{ scrollSnapAlign: { xs: "start", sm: "none" } }}
+      width={{
+        xs: "calc(100vw - 8px)",
+        sm: "300px",
+      }}
       borderRadius={4}
       p={1}
       border={`solid 2px ${mainColor}`}
