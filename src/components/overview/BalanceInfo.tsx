@@ -75,10 +75,18 @@ export const BalanceInfo: FC = () => {
         }}
       >
         <Flex flexDirection="column">
-          <Typography variant="h5">Current balance</Typography>
+          <Typography
+            variant="h5"
+            fontSize={{
+              xs: "1rem",
+              sm: "1.5rem",
+            }}
+          >
+            Current balance
+          </Typography>
           <Typography
             fontSize={{
-              xs: "2.5rem",
+              xs: "2rem",
               sm: "3.75rem",
             }}
             variant="h2"
@@ -88,10 +96,18 @@ export const BalanceInfo: FC = () => {
           </Typography>
         </Flex>
         <Flex flexDirection="column">
-          <Typography variant="h5">You'll end with...</Typography>
+          <Typography
+            variant="h5"
+            fontSize={{
+              xs: "1rem",
+              sm: "1.5rem",
+            }}
+          >
+            You'll end with...
+          </Typography>
           <Typography
             fontSize={{
-              xs: "2.5rem",
+              xs: "2rem",
               sm: "3.75rem",
             }}
             variant="h2"
