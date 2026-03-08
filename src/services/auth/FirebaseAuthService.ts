@@ -11,6 +11,7 @@ const gAuthProvider = new GoogleAuthProvider();
 
 export class FirebaseAuthService implements IAuthService {
   private user?: User;
+  private loaded: boolean = false;
 
   public async initiateSignIn(): Promise<string> {
     const auth = getAuth();
@@ -34,6 +35,7 @@ export class FirebaseAuthService implements IAuthService {
   ): () => void {
     const handler = (user: User | null) => {
       this.user = user ?? undefined;
+      this.loaded = true;
       callback(user?.uid);
     };
     return onAuthStateChanged(
@@ -51,5 +53,9 @@ export class FirebaseAuthService implements IAuthService {
 
   public isSignedIn(): boolean {
     return !!this.user;
+  }
+
+  public hasLoaded(): boolean {
+    return this.loaded;
   }
 }

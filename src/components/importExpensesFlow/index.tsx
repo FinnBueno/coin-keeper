@@ -12,7 +12,7 @@ export const ImportExpensesFlow: FC = () => {
   return (
     <>
       <Button variant="contained" size="large" onClick={handleOpen}>
-        Import bank entries
+        Import items
       </Button>
       <AppModal open={open} onClose={handleClose}>
         <FlowManager onComplete={handleClose} />

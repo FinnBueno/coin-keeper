@@ -7,4 +7,5 @@ export interface IAuthService {
   ): () => void;
   getUserId(): string | undefined;
   isSignedIn(): boolean;
+  hasLoaded(): boolean;
 }

@@ -31,7 +31,7 @@ export const BalanceInfo: FC = () => {
   return (
     <Box
       display="flex"
-      height="100%"
+      flexGrow={1}
       justifyContent="space-between"
       flexDirection="column"
     >
@@ -70,13 +70,27 @@ export const BalanceInfo: FC = () => {
       <Flex gap={4}>
         <Flex flexDirection="column">
           <Typography variant="h5">Current balance</Typography>
-          <Typography variant="h2" fontWeight="bold">
+          <Typography
+            fontSize={{
+              xs: "3rem",
+              sm: "3.75rem",
+            }}
+            variant="h2"
+            fontWeight="bold"
+          >
             {toEuro(currentBalance)}
           </Typography>
         </Flex>
         <Flex flexDirection="column">
           <Typography variant="h5">You'll end with...</Typography>
-          <Typography variant="h2" fontWeight="bold">
+          <Typography
+            fontSize={{
+              xs: "3rem",
+              sm: "3.75rem",
+            }}
+            variant="h2"
+            fontWeight="bold"
+          >
             {toEuro(finalBalance)}
           </Typography>
         </Flex>

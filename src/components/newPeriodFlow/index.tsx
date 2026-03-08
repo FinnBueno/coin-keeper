@@ -16,7 +16,7 @@ export const NewPeriodFlow: FC = () => {
         color="error"
         onClick={handleOpen}
       >
-        Start new period
+        New period
       </Button>
       <AppModal open={open} onClose={handleClose}>
         <FlowManager onComplete={handleClose} />

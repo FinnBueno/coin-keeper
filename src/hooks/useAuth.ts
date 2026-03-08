@@ -1,4 +1,4 @@
-import { useSyncExternalStore } from "react";
+import { useMemo, useSyncExternalStore } from "react";
 import { FirebaseAuthService } from "../services/auth/FirebaseAuthService";
 
 export const authService = new FirebaseAuthService();
@@ -8,5 +8,6 @@ export const useAuth = () => {
     authService.subscribeToAuthChange.bind(authService),
     authService.getUserId.bind(authService),
   );
-  return userId;
+  const hasLoaded = useMemo(() => authService.hasLoaded(), [userId]);
+  return { userId, hasLoaded };
 };
