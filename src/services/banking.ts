@@ -2,8 +2,10 @@ import { parse } from "node-html-parser";
 import type { HTMLElement } from "node-html-parser";
 import type { PlanCategory } from "../repositories/periodManagement/IPeriodManagementRepository";
 import { dutchMonthNameToIndex } from "../util/months";
+import { getRandomId } from "../util/id";
 
 export interface BankExportStatement {
+  id: string;
   title: string;
   dateLabel: string;
   amount: number;
@@ -188,17 +190,19 @@ function parseTransactionsForDay(
         .replace(".", "")
         .replace(",", ".");
 
+      const bankExportStatement: BankExportStatement = {
+        id: getRandomId(),
+        title: current.trim(),
+        amount: amount,
+        dateLabel,
+        category: undefined,
+        plannedExpenseId: undefined,
+      };
       const result: DailyBankExport = {
         ...total,
         items: {
           ...total.items,
-          [index]: {
-            title: current.trim(),
-            amount: amount,
-            dateLabel,
-            category: undefined,
-            plannedExpenseId: undefined,
-          },
+          [index]: bankExportStatement,
         },
       };
       return result;

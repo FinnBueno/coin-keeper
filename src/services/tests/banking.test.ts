@@ -1,4 +1,4 @@
-import { describe, it, expect, beforeEach } from "vitest";
+import { describe, it, expect, beforeEach, vi } from "vitest";
 import { parseStatementsFromHtml } from "../banking";
 
 const twoDaysWithTwoEntriesEach = `<ap-transaction-container>
@@ -115,7 +115,11 @@ const twoDaysWithTwoEntriesEach = `<ap-transaction-container>
           </ap-transaction-container>`;
 
 describe("Banking logic", () => {
-  beforeEach(() => {});
+  beforeEach(() => {
+    vi.mock("../../util/id", () => ({
+      getRandomId: () => "fake-id",
+    }));
+  });
 
   describe("given invalid inputs", () => {
     it("should throw for non-string", () => {
@@ -246,6 +250,7 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
@@ -333,12 +338,14 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Jumbo Zeist Laan v V  &gt;ZEIST",
                 dateLabel: "28 februari",
                 amount: -1,
@@ -364,12 +371,14 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Jumbo Zeist Laan v V  &gt;ZEIST",
                 dateLabel: "28 februari",
                 amount: -1,
@@ -381,12 +390,14 @@ describe("Banking logic", () => {
             dateLabel: "27 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "VinkVink",
                 dateLabel: "27 februari",
                 amount: -142.4,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Sparen",
                 dateLabel: "27 februari",
                 amount: -2500,
@@ -412,12 +423,14 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Jumbo Zeist Laan v V  &gt;ZEIST",
                 dateLabel: "28 februari",
                 amount: -1,
@@ -443,6 +456,7 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
@@ -525,12 +539,14 @@ describe("Banking logic", () => {
             dateLabel: "27 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "VinkVink",
                 dateLabel: "27 februari",
                 amount: -142.4,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Sparen",
                 dateLabel: "27 februari",
                 amount: -2500,
@@ -556,12 +572,14 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Jumbo Zeist Laan v V  &gt;ZEIST",
                 dateLabel: "28 februari",
                 amount: -1,
@@ -755,6 +773,7 @@ describe("Banking logic", () => {
             dateLabel: "27 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "Sparen",
                 dateLabel: "27 februari",
                 amount: -2500,
@@ -766,12 +785,14 @@ describe("Banking logic", () => {
             dateLabel: "26 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "Test afschrijving 1",
                 dateLabel: "26 februari",
                 amount: -20.88,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Test afschrijving 2",
                 dateLabel: "26 februari",
                 amount: -50,
@@ -795,12 +816,14 @@ describe("Banking logic", () => {
             dateLabel: "28 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "BCK*INTERPARKING P5 VR&gt;UTRECHT",
                 dateLabel: "28 februari",
                 amount: -6.65,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Jumbo Zeist Laan v V  &gt;ZEIST",
                 dateLabel: "28 februari",
                 amount: -1,
@@ -812,12 +835,14 @@ describe("Banking logic", () => {
             dateLabel: "27 februari",
             items: {
               0: {
+                id: "fake-id",
                 title: "VinkVink",
                 dateLabel: "27 februari",
                 amount: -142.4,
                 prefilledCategory: undefined,
               },
               1: {
+                id: "fake-id",
                 title: "Sparen",
                 dateLabel: "27 februari",
                 amount: -2500,

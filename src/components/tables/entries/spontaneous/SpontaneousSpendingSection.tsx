@@ -12,8 +12,8 @@ export const SpontaneousSpendingSection: FC<Props> = ({ items }) => {
   const { palette } = useTheme();
   return (
     <Flex flexDirection="column">
-      {items.map((item, index) => (
-        <Flex flexDirection="column" key={index}>
+      {items.map((item) => (
+        <Flex flexDirection="column" key={item.id}>
           <Typography
             variant="h6"
             noWrap
